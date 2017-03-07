@@ -4,6 +4,8 @@ require 'timecop'
 require 'fluent/log'
 require 'fluent/test'
 
+ROOT = File.dirname(__dir__)
+
 unless defined?(Test::Unit::AssertionFailedError)
   class Test::Unit::AssertionFailedError < StandardError
   end

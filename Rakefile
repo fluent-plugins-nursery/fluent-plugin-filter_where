@@ -13,6 +13,11 @@ task :default => :test
 
 desc 'Open an irb session preloaded with the gem library'
 task :console do
-    sh 'irb -rubygems -I lib'
+  sh 'irb -rubygems -I lib'
 end
 task :c => :console
+
+task :compile do
+  sh 'racc lib/fluent/plugin/filter_where/parser.racc'
+  sh 'rex lib/fluent/plugin/filter_where/parser.rex'
+end
