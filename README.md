@@ -100,6 +100,34 @@ Not supported yet
 
 See [CHANGELOG.md](CHANGELOG.md) for details.
 
+## Development
+
+Run test:
+
+```
+$ bundle exec rake test
+```
+
+Release:
+
+Modify gemspec and CHANGELOG.md, then
+
+```
+$ bundle exec rake release
+```
+
+## Development of SQL-like Syntax
+
+This plugin uses [rexical](https://github.com/tenderlove/rexical) for lexical scanner generator, and [racc](https://github.com/tenderlove/racc) for parser generator.
+
+If you modify `praser.rex` or `praser.racc`, you must compile them as:
+
+```
+$ bundle exec rake compile
+```
+
+The `test` task runs the `compile` task before running.
+
 ## Contributing
 
 1. Fork it

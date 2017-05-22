@@ -10,6 +10,7 @@ Rake::TestTask.new(:test) do |t|
   #t.warning = true
 end
 task :default => :test
+task :test => [:compile]
 
 desc 'Open an irb session preloaded with the gem library'
 task :console do
