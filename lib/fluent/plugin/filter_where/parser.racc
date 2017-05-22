@@ -15,6 +15,7 @@ class Fluent::FilterWhere::Parser
   token START_WITH
   token END_WITH
   token INCLUDE
+  token REGEXP
   token IS
   token NOT
   
@@ -60,6 +61,7 @@ rule
    | STRING START_WITH IDENTIFIER { StringOpExp.new(val[0], val[2], :START_WITH) }
    | STRING END_WITH   IDENTIFIER { StringOpExp.new(val[0], val[2], :END_WITH) }
    | STRING INCLUDE    IDENTIFIER { StringOpExp.new(val[0], val[2], :INCLUDE) }
+   | IDENTIFIER REGEXP STRING     { RegexpOpExp.new(val[0], val[2], :REGEXP) }
    | IDENTIFIER IS NULL           { NullOpExp.new(val[0], :EQ) }
    | IDENTIFIER IS NOT NULL       { NullOpExp.new(val[0], :NEQ) }
    | exp OR exp                   { LogicalOpExp.new(val[0], val[2], :OR) }

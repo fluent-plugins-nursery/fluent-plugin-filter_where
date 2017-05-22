@@ -88,6 +88,8 @@ class WhereParserTest < Test::Unit::TestCase
     assert_true(result.eval(record))
     result = parser.scan(%q[string include 'str'])
     assert_true(result.eval(record))
+    result = parser.scan(%q[string regexp '.*str.*'])
+    assert_true(result.eval(record))
   end
 
   def test_null_op
