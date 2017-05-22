@@ -11,8 +11,6 @@ macro
 rule
   \(                    { [:"(", text] }
   \)                    { [:")", text] }
-  AND                   { [:AND, text] }
-  OR                    { [:OR, text] }
   \=                    { [:EQ, text] }
   \<\>                  { [:NEQ, text] }
   \!\=                  { [:NEQ, text] }
@@ -20,21 +18,46 @@ rule
   \>                    { [:GT, text] }
   \<\=                  { [:LE, text] }
   \<                    { [:LT, text] }
-  START_WITH            { [:START_WITH, text] }
-  END_WITH              { [:END_WITH, text] }
-  INCLUDE               { [:INCLUDE, text] }
-  IS                    { [:IS, text] }
-  NOT                   { [:NOT, text] }
-  NULL                  { [:NULL, text] }
-
-  # boolean literal
-  TRUE                  { [:BOOLEAN, BooleanLiteral.new(text)] }
-  FALSE                 { [:BOOLEAN, BooleanLiteral.new(text)] }
 
   # number literal
   {Number}              { [:NUMBER, NumberLiteral.new(text)] }
 
-  # identifier literal {NonQuotedIdentifier} { @state = nil; [:IDENTIFIER, IdentifierLiteral.new(text)] }
+  # identifier literal
+  {NonQuotedIdentifier} {
+                          # rexical gem does not do longest match, so following rule is wrong
+                          # rule
+                          #   NOT { [:NOT, text] }
+                          #   {NonQuotedIdentifier} { [:IDENTIFIER, text] }
+                          # because `nothing` is treated as `not` and `hing`
+                          # Because of it, I had to write everything in {NonQuotedIdentifier}
+
+                          case text.downcase
+                          when 'and'
+                            [:AND, text]
+                          when 'or'
+                            [:OR, text]
+                          when 'start_with'
+                            [:START_WITH, text]
+                          when 'end_with'
+                            [:END_WITH, text]
+                          when 'include'
+                            [:INCLUDE, text]
+                          when 'regexp'
+                            [:REGEXP, text]
+                          when 'is'
+                            [:IS, text]
+                          when 'not'
+                            [:NOT, text]
+                          when 'null'
+                            [:NULL, text]
+                          when 'true'
+                            [:BOOLEAN, BooleanLiteral.new(text)]
+                          when 'false'
+                            [:BOOLEAN, BooleanLiteral.new(text)]
+                          else
+                            [:IDENTIFIER, IdentifierLiteral.new(text)]
+                          end
+                        }
   \"                    { @state = :IDENTIFIER; @string = ''; nil }
 
   # string literal

@@ -63,12 +63,6 @@ class Fluent::FilterWhere::Parser < Racc::Parser
       when (text = @ss.scan(/\)/i))
          action { [:")", text] }
 
-      when (text = @ss.scan(/AND/i))
-         action { [:AND, text] }
-
-      when (text = @ss.scan(/OR/i))
-         action { [:OR, text] }
-
       when (text = @ss.scan(/\=/i))
          action { [:EQ, text] }
 
@@ -90,32 +84,39 @@ class Fluent::FilterWhere::Parser < Racc::Parser
       when (text = @ss.scan(/\</i))
          action { [:LT, text] }
 
-      when (text = @ss.scan(/START_WITH/i))
-         action { [:START_WITH, text] }
-
-      when (text = @ss.scan(/END_WITH/i))
-         action { [:END_WITH, text] }
-
-      when (text = @ss.scan(/INCLUDE/i))
-         action { [:INCLUDE, text] }
-
-      when (text = @ss.scan(/IS/i))
-         action { [:IS, text] }
-
-      when (text = @ss.scan(/NOT/i))
-         action { [:NOT, text] }
-
-      when (text = @ss.scan(/NULL/i))
-         action { [:NULL, text] }
-
-      when (text = @ss.scan(/TRUE/i))
-         action { [:BOOLEAN, BooleanLiteral.new(text)] }
-
-      when (text = @ss.scan(/FALSE/i))
-         action { [:BOOLEAN, BooleanLiteral.new(text)] }
-
       when (text = @ss.scan(/-?[0-9]+(\.[0-9]+)?/i))
          action { [:NUMBER, NumberLiteral.new(text)] }
+
+      when (text = @ss.scan(/[a-zA-Z$][a-zA-z0-9\.\-_]*/i))
+         action {
+                          case text.downcase
+                          when 'and'
+                            [:AND, text]
+                          when 'or'
+                            [:OR, text]
+                          when 'start_with'
+                            [:START_WITH, text]
+                          when 'end_with'
+                            [:END_WITH, text]
+                          when 'include'
+                            [:INCLUDE, text]
+                          when 'regexp'
+                            [:REGEXP, text]
+                          when 'is'
+                            [:IS, text]
+                          when 'not'
+                            [:NOT, text]
+                          when 'null'
+                            [:NULL, text]
+                          when 'true'
+                            [:BOOLEAN, BooleanLiteral.new(text)]
+                          when 'false'
+                            [:BOOLEAN, BooleanLiteral.new(text)]
+                          else
+                            [:IDENTIFIER, IdentifierLiteral.new(text)]
+                          end
+                        }
+
 
       when (text = @ss.scan(/\"/i))
          action { @state = :IDENTIFIER; @string = ''; nil }

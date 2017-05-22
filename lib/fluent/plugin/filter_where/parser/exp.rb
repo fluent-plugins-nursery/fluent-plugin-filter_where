@@ -135,6 +135,8 @@ module Fluent
       end
 
       class LogicalOpExp < Exp
+        attr_reader :left, :right, :operator
+
         # @param [ParserLiteral] left
         # @param [ParserLiteral] right
         # @param [Symbol] operator

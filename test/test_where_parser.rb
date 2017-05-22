@@ -92,7 +92,7 @@ class WhereParserTest < Test::Unit::TestCase
 
   def test_null_op
     result = parser.scan(%q[nothing IS NULL])
-    # NOT ...
+    result.eval(record)
     assert_true(result.eval(record))
     result = parser.scan(%q[string IS NOT NULL])
     assert_true(result.eval(record))
