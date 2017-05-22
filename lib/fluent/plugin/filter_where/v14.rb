@@ -4,7 +4,6 @@ module Fluent
   class Plugin::FilterWhere < Plugin::Filter
     Fluent::Plugin.register_output('where', self)
 
-    helpers :event_emitter
     include ::Fluent::FilterWhere::Core
 
     def initialize
@@ -15,7 +14,7 @@ module Fluent
       super
     end
 
-    def process(tag, es)
+    def filter(tag, time, record)
       super
     end
   end

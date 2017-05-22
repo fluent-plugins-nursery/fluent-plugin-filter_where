@@ -1,8 +1,8 @@
 require_relative 'core'
 
 module Fluent
-  class FilterWhere < Output
-    Fluent::Plugin.register_output('where', self)
+  class FilterWhere < Filter
+    Fluent::Plugin.register_filter('where', self)
 
     include ::Fluent::FilterWhere::Core
 
@@ -15,18 +15,12 @@ module Fluent
       define_method("log") { $log }
     end
 
-    # Define `router` method of v0.12 to support v0.10 or earlier
-    unless method_defined?(:router)
-      define_method("router") { Fluent::Engine }
-    end
-
     def configure(conf)
       super
     end
 
-    def emit(tag, es, chain)
-      process(tag, es)
-      chain.next
+    def filter(tag, time, record)
+      super
     end
   end
 end
