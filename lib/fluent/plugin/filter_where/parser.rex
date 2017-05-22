@@ -32,27 +32,27 @@ rule
                           # Because of it, I had to write everything in {NonQuotedIdentifier}
 
                           case text.downcase
-                          when 'and'
+                          when 'and'.freeze
                             [:AND, text]
-                          when 'or'
+                          when 'or'.freeze
                             [:OR, text]
-                          when 'start_with'
+                          when 'start_with'.freeze
                             [:START_WITH, text]
-                          when 'end_with'
+                          when 'end_with'.freeze
                             [:END_WITH, text]
-                          when 'include'
+                          when 'include'.freeze
                             [:INCLUDE, text]
-                          when 'regexp'
+                          when 'regexp'.freeze
                             [:REGEXP, text]
-                          when 'is'
+                          when 'is'.freeze
                             [:IS, text]
-                          when 'not'
+                          when 'not'.freeze
                             [:NOT, text]
-                          when 'null'
+                          when 'null'.freeze
                             [:NULL, text]
-                          when 'true'
+                          when 'true'.freeze
                             [:BOOLEAN, BooleanLiteral.new(text)]
-                          when 'false'
+                          when 'false'.freeze
                             [:BOOLEAN, BooleanLiteral.new(text)]
                           else
                             [:IDENTIFIER, IdentifierLiteral.new(text)]
