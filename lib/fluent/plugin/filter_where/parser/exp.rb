@@ -65,36 +65,6 @@ module Fluent
         end
       end
 
-      class TimestampOpExp < BinaryOpExp
-        def initialize(lef, right, operator)
-          @left = left.is_a?(IdentifierLiteral) ? left : TimestampLiteral.new(left)
-          @right = right.is_a?(IdentifierLiteral) ? right : TimestampLiteral.new(right)
-          @operator = operator
-        end
-
-        def eval(record)
-          l = left.get(record)
-          r = right.get(record)
-          case operator
-          when :EQ
-            l == r
-          when :NEQ
-            l != r
-          when :GT
-            l > r
-          when :GE
-            l >= r
-          when :LT
-            l < r
-          when :LE
-            l <= r
-          else
-            assert(false)
-            false
-          end
-        end
-      end
-
       class StringOpExp < BinaryOpExp
         def eval(record)
           l = left.get(record)

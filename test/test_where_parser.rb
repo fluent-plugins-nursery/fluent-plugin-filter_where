@@ -92,8 +92,6 @@ class WhereParserTest < Test::Unit::TestCase
 
   def test_null_op
     result = parser.scan(%q[nothing IS NULL])
-    require 'pry'
-    binding.pry
     # NOT ...
     assert_true(result.eval(record))
     result = parser.scan(%q[string IS NOT NULL])

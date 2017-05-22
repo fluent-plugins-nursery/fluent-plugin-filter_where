@@ -108,9 +108,6 @@ class Fluent::FilterWhere::Parser < Racc::Parser
       when (text = @ss.scan(/NULL/i))
          action { [:NULL, text] }
 
-      when (text = @ss.scan(/TIMESTAMP/i))
-         action { [:TIMESTAMP, text] }
-
       when (text = @ss.scan(/TRUE/i))
          action { [:BOOLEAN, BooleanLiteral.new(text)] }
 
@@ -119,9 +116,6 @@ class Fluent::FilterWhere::Parser < Racc::Parser
 
       when (text = @ss.scan(/-?[0-9]+(\.[0-9]+)?/i))
          action { [:NUMBER, NumberLiteral.new(text)] }
-
-      when (text = @ss.scan(/[a-zA-Z$][a-zA-z0-9\.\-_]*/i))
-         action { @state = nil; [:IDENTIFIER, IdentifierLiteral.new(text)] }
 
       when (text = @ss.scan(/\"/i))
          action { @state = :IDENTIFIER; @string = ''; nil }

@@ -2,7 +2,6 @@ class Fluent::FilterWhere::Parser
   prechigh
     left OR
     left AND
-    right TIMESTAMP
     right NOT
   preclow
 
@@ -27,7 +26,6 @@ class Fluent::FilterWhere::Parser
   token STRING
   token NUMBER
   token IDENTIFIER
-  token TIMESTAMP
 
   options no_result_var
 rule
@@ -35,9 +33,6 @@ rule
   input: # empty string
    | exp { val[0] }
    ;
-  
-  timestamp: TIMESTAMP STRING     { TimestampLiteral.new(val[1]) }
-   | TIMESTAMP NUMBER             { TimestampLiteral(val[1]) }
   
   exp: IDENTIFIER EQ BOOLEAN      { BooleanOpExp.new(val[0], val[2], :EQ) }
    | IDENTIFIER NEQ BOOLEAN       { BooleanOpExp.new(val[0], val[2], :NEQ) }
@@ -65,18 +60,6 @@ rule
    | STRING START_WITH IDENTIFIER { StringOpExp.new(val[0], val[2], :START_WITH) }
    | STRING END_WITH   IDENTIFIER { StringOpExp.new(val[0], val[2], :END_WITH) }
    | STRING INCLUDE    IDENTIFIER { StringOpExp.new(val[0], val[2], :INCLUDE) }
-   | IDENTIFIER EQ  timestamp     { TimestampOpExp.new(val[0], val[2], :EQ) }
-   | IDENTIFIER NEQ timestamp     { TimestampOpExp.new(val[0], val[2], :NEQ) }
-   | IDENTIFIER GT  timestamp     { TimestampOpExp.new(val[0], val[2], :GT) }
-   | IDENTIFIER GE  timestamp     { TimestampOpExp.new(val[0], val[2], :GE) }
-   | IDENTIFIER LT  timestamp     { TimestampOpExp.new(val[0], val[2], :LT) }
-   | IDENTIFIER LE  timestamp     { TimestampOpExp.new(val[0], val[2], :LE) }
-   | timestamp EQ  IDENTIFIER     { TimestampOpExp.new(val[0], val[2], :EQ) }
-   | timestamp NEQ IDENTIFIER     { TimestampOpExp.new(val[0], val[2], :NEQ) }
-   | timestamp GT  IDENTIFIER     { TimestampOpExp.new(val[0], val[2], :GT) }
-   | timestamp GE  IDENTIFIER     { TimestampOpExp.new(val[0], val[2], :GE) }
-   | timestamp LT  IDENTIFIER     { TimestampOpExp.new(val[0], val[2], :LT) }
-   | timestamp LE  IDENTIFIER     { TimestampOpExp.new(val[0], val[2], :LE) }
    | IDENTIFIER IS NULL           { NullOpExp.new(val[0], :EQ) }
    | IDENTIFIER IS NOT NULL       { NullOpExp.new(val[0], :NEQ) }
    | exp OR exp                   { LogicalOpExp.new(val[0], val[2], :OR) }

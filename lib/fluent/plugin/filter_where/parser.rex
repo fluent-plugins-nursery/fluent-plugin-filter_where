@@ -26,7 +26,6 @@ rule
   IS                    { [:IS, text] }
   NOT                   { [:NOT, text] }
   NULL                  { [:NULL, text] }
-  TIMESTAMP             { [:TIMESTAMP, text] }
 
   # boolean literal
   TRUE                  { [:BOOLEAN, BooleanLiteral.new(text)] }
@@ -35,8 +34,7 @@ rule
   # number literal
   {Number}              { [:NUMBER, NumberLiteral.new(text)] }
 
-  # identifier literal
-  {NonQuotedIdentifier} { @state = nil; [:IDENTIFIER, IdentifierLiteral.new(text)] }
+  # identifier literal {NonQuotedIdentifier} { @state = nil; [:IDENTIFIER, IdentifierLiteral.new(text)] }
   \"                    { @state = :IDENTIFIER; @string = ''; nil }
 
   # string literal

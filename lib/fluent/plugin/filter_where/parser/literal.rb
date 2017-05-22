@@ -40,46 +40,6 @@ module Fluent
         end
       end
 
-      class TimestampLiteral < Literal
-        def self.default_timezone
-          "UTC"
-        end
-
-        def initialize(literal)
-          case literal
-          when StringLiteral
-            initializeWithStringLiteral(literal)
-          when NumberLiteral
-            initializeWithNumberLiteral(literal)
-          when TimestampLiteral
-            initializeWithTimestampLiteral(literal)
-          else
-            raise ArgumentError.new("\"%s\" is not a Timestamp literal" % literal.text)
-          end
-        end
-
-        if defined?(EventTime)
-          Time = ::Fluent::EventTime
-        else
-          Time = ::Time
-        end
-
-        def initializeWithStringLiteral(literal)
-          @text = literal.text
-          @val = Time.parse(literal.val)
-        end
-
-        def initializeWithNumberLiteral(literal)
-          @text = literal.text
-          @val = Time.new(literal.val) # ToDo: Do not convert to float and use Fluent::EventTime.new(sec, nsec)
-        end
-
-        def initializeWithTimestampLiteral(literal)
-          @text = literal.text
-          @val = literal.val
-        end
-      end
-
       class IdentifierLiteral < Literal
         attr_reader :name
 
