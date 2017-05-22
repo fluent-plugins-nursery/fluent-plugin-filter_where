@@ -93,6 +93,6 @@ else # <= v0.12
   end
 
   def create_driver(conf, syntax: :v1, default_tag: 'tag')
-    FilterWhereTestDriver.new(Fluent::Plugin::FilterWhere, default_tag).configure(conf, syntax: syntax)
+    FilterWhereTestDriver.new(Fluent::PluginFilterWhere, default_tag).configure(conf, syntax: syntax)
   end
 end

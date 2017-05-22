@@ -2,14 +2,8 @@ require_relative 'helper'
 
 class WhereParserTest < Test::Unit::TestCase
   class << self
-    def systemputs(cmd)
-      puts cmd
-      raise unless system cmd
-    end
-
     def startup
-      systemputs "racc #{ROOT}/lib/fluent/plugin/filter_where/parser.racc -o #{ROOT}/lib/fluent/plugin/filter_where/parser.tab.rb"
-      systemputs "rex #{ROOT}/lib/fluent/plugin/filter_where/parser.rex -o #{ROOT}/lib/fluent/plugin/filter_where/parser.rex.rb"
+      system "rake compile"
       require 'fluent/plugin/filter_where/parser.tab'
     end
   end
