@@ -2,7 +2,7 @@ require_relative 'core'
 
 module Fluent
   class Plugin::FilterWhere < Plugin::Filter
-    Fluent::Plugin.register_output('where', self)
+    Fluent::Plugin.register_filter('where', self)
 
     include ::Fluent::FilterWhere::Core
 

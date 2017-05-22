@@ -1,179 +1,100 @@
-# fluent-plugin-record-reformer
+# fluent-plugin-filter_where
 
-[![Build Status](https://secure.travis-ci.org/sonots/fluent-plugin-record-reformer.png?branch=master)](http://travis-ci.org/sonots/fluent-plugin-record-reformer)
+[![Build Status](https://secure.travis-ci.org/sonots/fluent-plugin-filter_where.png?branch=master)](http://travis-ci.org/sonots/fluent-plugin-filter_where)
 
-Fluentd plugin to add or replace fields of a event record
+Fluentd plugin to filter records with SQL-like WHERE statements
 
 ## Requirements
 
 See [.travis.yml](.travis.yml)
 
-Note that `fluent-plugin-record-reformer` supports both v0.14 API and v0.12 API in one gem.
+`fluent-plugin-filter_where` supports both v0.14 API and v0.12 API in one gem.
 
 ## Installation
 
 Use RubyGems:
 
-    gem install fluent-plugin-record-reformer
+    gem install fluent-plugin-filter_where
 
 ## Configuration
 
-Example:
+- where
 
-    <match foo.**>
-      type record_reformer
-      remove_keys remove_me
-      renew_record false
-      enable_ruby false
-      
-      tag reformed.${tag_prefix[-2]}
-      <record>
-        hostname ${hostname}
-        input_tag ${tag}
-        last_tag ${tag_parts[-1]}
-        message ${record['message']}, yay!
-      </record>
-    </match>
+    The SQL-like WHERE statements. See [SQL-like Syntax](#sql-like-syntax) for more details.
 
-Assume following input is coming (indented):
+### Example
 
-```js
-foo.bar {
-  "remove_me":"bar",
-  "not_remove_me":"bar",
-  "message":"Hello world!"
-}
+```apache
+<filter foo.**>
+  @type where
+  where string_key = 'string' OR number_key >= 0.1
+</filter>
 ```
 
-then output becomes as below (indented):
-
-```js
-reformed.foo {
-  "not_remove_me":"bar",
-  "hostname":"YOUR_HOSTNAME",
-  "input_tag":"foo.bar",
-  "last_tag":"bar",
-  "message":"Hello world!, yay!",
-}
-```
-
-## Configuration (Classic Style)
+## SQL-like Syntax
 
 Example:
 
-    <match foo.**>
-      type record_reformer
-      remove_keys remove_me
-      renew_record false
-      enable_ruby false
-      tag reformed.${tag_prefix[-2]}
-      
-      hostname ${hostname}
-      input_tag ${tag}
-      last_tag ${tag_parts[-1]}
-      message ${record['message']}, yay!
-    </match>
+```sql
+where (string_key START_WITH 'str' AND number_key > 1.0) OR ("true_key" = true AND string_key REGEXP '^reg')
+```
 
-This results in same, but please note that following option parameters are reserved, so can not be used as a record key.
+## Literals
 
-## Option Parameters
+### Boolean Literal
 
-- output_tag (obsolete)
+`true` or `TRUE` or `false` or `FALSE` are considered as a boolean literal
 
-    The output tag name. This option is deprecated. Use `tag` option instead
+### Number Literal
 
-- tag
+Characters matching with a regular expression `-?[0-9]+(\.[0-9]+)?` is considered as a number literal
 
-    The output tag name. 
+### String Literal
 
-- remove_keys
+Characters surrounded by `'` such as `'foo'` is considered as a string literal
 
-    Specify record keys to be removed by a string separated by , (comma) like
+### Json Literal
 
-        remove_keys message,foo
+Not supported yet
 
-- renew_record *bool*
+### Identifier Literal
 
-    `renew_record true` creates an output record newly without extending (merging) the input record fields. Default is `false`.
+Characters matching with a regular expression `[a-zA-Z_][a-zA-z0-9_]*` such as `foobar`, and characters surrounded by `"` such as `"foo-bar"`, `"foo.bar"`, and `"foo\"bar"` are considred as an identifier literal, that is, embulk's column name.
 
-- renew\_time\_key *string*
+## Operators
 
-    `renew_time_key foo` overwrites the time of events with a value of the record field `foo` if exists. The value of `foo` must be a unix time.
+### Boolean Operator
 
-- keep_keys
+* `=`
+* `!=`
 
-    You may want to remain some record fields although you specify `renew_record true`. Then, specify record keys to be kept by a string separated by , (comma) like
+### Number Operator (Long and Double)
 
-        keep_keys message,foo
+* `=`
+* `!=`
+* `>`
+* `>=`
+* `<=`
+* `<`
 
-- enable_ruby *bool*
+### String Operator
 
-    Enable to use ruby codes in placeholders. See `Placeholders` section.
-    Default is `true` (just for lower version compatibility). 
+* `=`
+* `!=`
+* `START_WITH`
+* `END_WITH`
+* `INCLUDE`
+* `REGEXP`
 
-- auto_typecast *bool*
+### Json Operator
 
-    Automatically cast the field types. Default is false.
-    NOTE: This option is effective only for field values comprised of a single placeholder. 
+Not supported yet
 
-    Effective Examples:
-    
-        foo ${foo}
-    
-    Non-Effective Examples:
-    
-        foo ${foo}${bar}
-        foo ${foo}bar
-        foo 1
-    
-    Internally, this **keeps** the type of value if the value text is comprised of a single placeholder, otherwise, values are treated as strings. 
-    
-    When you need to cast field types manually, [out_typecast](https://github.com/tarom/fluent-plugin-typecast) and [filter_typecast](https://github.com/sonots/fluent-plugin-filter_typecast) are available. 
+### unary operator
 
-## Placeholders
-
-Following placeholders are available:
-
-* ${record["key"]} Record value of `key` such as `${record["message"]}` in the above example (available from v0.8.0).
-  * Originally, record placeholders were available as `${key}` such as `${message}`. This is still kept for the backward compatibility, but would be removed in the future.
-* ${hostname} Hostname of the running machine
-* ${tag} Input tag
-* ${time} Time of the event
-* ${tags[N]} (Obsolete. Use tag\_parts) Input tag splitted by '.'
-* ${tag\_parts[N]} Input tag splitted by '.' indexed with N such as `${tag_parts[0]}`, `${tag_parts[-1]}`. 
-* ${tag\_prefix[N]} Tag parts before and on the index N. For example,
-
-        Input tag: prefix.test.tag.suffix
-        
-        ${tag_prefix[0]}  => prefix
-        ${tag_prefix[1]}  => prefix.test
-        ${tag_prefix[-2]} => prefix.test.tag
-        ${tag_prefix[-1]} => prefix.test.tag.suffix
-
-* ${tag\_suffix[N]} Tag parts after and on the index N. For example,
-
-        Input tag: prefix.test.tag.suffix
-    
-        ${tag_suffix[0]}  => prefix.test.tag.suffix
-        ${tag_suffix[1]}  => test.tag.suffix
-        ${tag_suffix[-2]} => tag.suffix
-        ${tag_suffix[-1]} => suffix
-
-It is also possible to write a ruby code in placeholders if you set `enable_ruby true` option, so you may write some codes as
-
-* ${time.strftime('%Y-%m-%dT%H:%M:%S%z')}
-* ${tag\_parts.last}
-
-but, please note that enabling ruby codes is not encouraged by security reasons and also in terms of the performance.
-
-## Relatives
-
-Following plugins look similar:
-
-* [fluent-plugin-record-modifier](https://github.com/repeatedly/fluent-plugin-record-modifier)
-* [fluent-plugin-format](https://github.com/mach/fluent-plugin-format)
-* [fluent-plugin-add](https://github.com/yu-yamada/fluent-plugin-add)
-* [filter_record_transformer](http://docs.fluentd.org/v0.12/articles/filter_record_transformer) is a Fluentd v0.12 built-in plugin which is based on record-reformer.
+* "xxx IS NULL"
+* "xxx IS NOT NULL"
+* "NOT xxx"
 
 ## ChangeLog
 
@@ -189,4 +110,4 @@ See [CHANGELOG.md](CHANGELOG.md) for details.
 
 ## Copyright
 
-Copyright (c) 2013 - 2015 Naotoshi Seo. See [LICENSE](LICENSE) for details.
+Copyright (c) 2017 - Naotoshi Seo. See [LICENSE](LICENSE) for details.
