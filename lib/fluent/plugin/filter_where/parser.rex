@@ -86,6 +86,7 @@ rule
 :STRING       \\                      { @string << "\\"; nil }
 
 inner
+  require 'logger'
   attr_reader :log
   def initialize(log: nil)
     @log = log || ::Logger.new(nil)

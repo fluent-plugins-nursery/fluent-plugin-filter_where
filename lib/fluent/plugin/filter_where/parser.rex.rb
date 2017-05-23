@@ -200,6 +200,7 @@ class Fluent::FilterWhere::Parser < Racc::Parser
     token
   end  # def _next_token
 
+  require 'logger'
   attr_reader :log
   def initialize(log: nil)
     @log = log || ::Logger.new(nil)
