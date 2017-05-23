@@ -1,3 +1,9 @@
+## 1.0.2 (2017-05-23)
+
+Enhancements:
+
+* raise ConfigError if failed to parse where
+
 ## 1.0.1 (2017-05-23)
 
 Fixes:
