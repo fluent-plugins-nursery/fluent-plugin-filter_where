@@ -53,7 +53,7 @@ class WhereParserTest < Test::Unit::TestCase
     assert_true(result.eval(record))
     result = parser.scan(%q[boolean != false])
     assert_true(result.eval(record))
-    assert_raise(Racc::ParseError) { parser.scan(%q[boolean > false]) }
+    assert_raise(Fluent::ConfigError) { parser.scan(%q[boolean > false]) }
   end
 
   def test_number_op

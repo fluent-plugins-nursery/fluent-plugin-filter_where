@@ -14,7 +14,7 @@ module Fluent
     def configure(conf)
       super
 
-      parser = Fluent::FilterWhere::Parser.new
+      parser = Fluent::FilterWhere::Parser.new(log: log)
       @scanner = parser.scan(@where)
     end
 

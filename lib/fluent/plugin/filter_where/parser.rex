@@ -86,7 +86,13 @@ rule
 :STRING       \\                      { @string << "\\"; nil }
 
 inner
+  attr_reader :log
+  def initialize(log: nil)
+    @log = log || ::Logger.new(nil)
+    super()
+  end
+
   def on_error(error_token_id, error_value, value_stack)
-    super
+    raise Fluent::ConfigError.new("filter_where: failed to parse where value_stack:#{value_stack} error_value:#{error_value.inspect}")
   end
 end

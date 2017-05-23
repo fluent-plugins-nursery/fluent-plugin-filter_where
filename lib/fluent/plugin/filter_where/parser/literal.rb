@@ -41,14 +41,16 @@ module Fluent
       end
 
       class IdentifierLiteral < Literal
-        attr_reader :name
-
-        def initialize(name)
-          @name = name
+        def initialize(text)
+          @text = text
         end
 
         def get(record)
-          record[@name]
+          record[@text]
+        end
+
+        def name
+          @text
         end
       end
     end
