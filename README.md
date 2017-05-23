@@ -65,22 +65,22 @@ Characters matching with a regular expression `[a-zA-Z_][a-zA-z0-9_]*` such as `
 
 ### Boolean Operator
 
-* `=`
-* `!=`
+* `=`: Equal operator
+* `!=`, `<>`: Not equal operator
 
 ### Number Operator (Long and Double)
 
-* `=`
-* `!=`
-* `>`
-* `>=`
-* `<=`
-* `<`
+* `=`: Equal operator
+* `!=`, `<>`: Not equal operator
+* `>`: Greater than operator
+* `>=`: Greater than or equal operator
+* `<=`: Less than or equal operator
+* `<`: Less than operator
 
 ### String Operator
 
-* `=`
-* `!=`
+* `=`: Equal operator
+* `!=`, `<>`: Not equal operator
 * `START_WITH`
 * `END_WITH`
 * `INCLUDE`
@@ -90,11 +90,14 @@ Characters matching with a regular expression `[a-zA-Z_][a-zA-z0-9_]*` such as `
 
 Not supported yet
 
-### unary operator
+### Negate Operator
 
-* "xxx IS NULL"
-* "xxx IS NOT NULL"
-* "NOT xxx"
+* `NOT xxx`
+
+### NULL Operator
+
+* `IS NULL`
+* `IS NOT NULL`
 
 ## ChangeLog
 
