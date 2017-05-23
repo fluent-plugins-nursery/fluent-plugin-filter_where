@@ -36,7 +36,7 @@ Use RubyGems:
 Example:
 
 ```sql
-where (string_key START_WITH 'str' AND number_key > 1.0) OR ("true_key" = true AND string_key REGEXP '^reg')
+where (string_key START_WITH 'str' AND number_key > 1.0) OR ("true_key" = true AND NOT (string_key REGEXP '^reg'))
 ```
 
 ## Literals
