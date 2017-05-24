@@ -1,12 +1,12 @@
-require 'fluent/plugin/filter_where/parser.tab'
+require_relative 'version'
+require_relative 'parser'
 
-module Fluent; module FilterWhere; end; end
-module Fluent
-  module FilterWhere::Core
+module Fluent::FilterWhere
+  module Core
     def initialize
       super
     end
-    
+
     def self.included(klass)
       klass.config_param :where, :string, :desc => 'The SQL-like WHERE statement.'
     end

@@ -1,7 +1,7 @@
 require_relative 'core'
 
-module Fluent
-  class Plugin::FilterWhere < Plugin::Filter
+module Fluent::Plugin
+  class FilterWhere < Filter
     Fluent::Plugin.register_filter('where', self)
 
     include ::Fluent::FilterWhere::Core
@@ -9,7 +9,7 @@ module Fluent
     def initialize
       super
     end
-    
+
     def configure(conf)
       super
     end
