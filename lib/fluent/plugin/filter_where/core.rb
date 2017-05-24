@@ -15,11 +15,11 @@ module Fluent::FilterWhere
       super
 
       parser = Fluent::FilterWhere::Parser.new(log: log)
-      @scanner = parser.scan(@where)
+      @evaluator = parser.scan(@where)
     end
 
     def filter(tag, time, record)
-      if @scanner.eval(record)
+      if @evaluator.eval(record)
         record
       else
         nil # remove
