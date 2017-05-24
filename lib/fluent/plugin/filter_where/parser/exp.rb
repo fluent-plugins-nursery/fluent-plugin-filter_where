@@ -4,7 +4,7 @@ require_relative 'literal'
 module Fluent
   module FilterWhere
     class Parser
-      class  Exp
+      class Exp
         def eval(record)
           raise NotImplementedError
         end

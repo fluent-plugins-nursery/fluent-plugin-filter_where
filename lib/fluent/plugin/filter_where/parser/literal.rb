@@ -1,5 +1,4 @@
 # Literal Node of AST (Abstract Syntax Tree)
-require 'time'
 
 module Fluent
   module FilterWhere
