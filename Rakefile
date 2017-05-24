@@ -19,6 +19,6 @@ end
 task :c => :console
 
 task :compile do
-  sh 'racc lib/fluent/plugin/filter_where/parser.racc'
-  sh 'rex lib/fluent/plugin/filter_where/parser.rex'
+  sh 'racc lib/fluent/plugin/filter_where/parser/parser.racc'
+  sh 'rex lib/fluent/plugin/filter_where/parser/parser.rex'
 end

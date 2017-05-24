@@ -1,1 +1,1 @@
-require_relative 'parser.tab'
+require_relative 'parser/parser.tab'
