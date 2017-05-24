@@ -1,9 +1,10 @@
 # encoding: utf-8
 $:.push File.expand_path('../lib', __FILE__)
+require_relative 'lib/fluent/plugin/filter_where/version'
 
 Gem::Specification.new do |gem|
   gem.name        = "fluent-plugin-filter_where"
-  gem.version     = "1.0.3"
+  gem.version     = Fluent::FilterWhere::VERSION
   gem.authors     = ["Naotoshi Seo"]
   gem.email       = "sonots@gmail.com"
   gem.homepage    = "https://github.com/sonots/fluent-plugin-filter_where"

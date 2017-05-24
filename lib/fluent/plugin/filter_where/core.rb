@@ -1,12 +1,12 @@
-require 'fluent/plugin/filter_where/parser.tab'
+require_relative 'version'
+require_relative 'parser'
 
-module Fluent; module FilterWhere; end; end
-module Fluent
-  module FilterWhere::Core
+module Fluent::FilterWhere
+  module Core
     def initialize
       super
     end
-    
+
     def self.included(klass)
       klass.config_param :where, :string, :desc => 'The SQL-like WHERE statement.'
     end
@@ -15,11 +15,11 @@ module Fluent
       super
 
       parser = Fluent::FilterWhere::Parser.new(log: log)
-      @scanner = parser.scan(@where)
+      @evaluator = parser.scan(@where)
     end
 
     def filter(tag, time, record)
-      if @scanner.eval(record)
+      if @evaluator.eval(record)
         record
       else
         nil # remove

@@ -1,10 +1,10 @@
 require_relative 'helper'
 
-class WhereParserTest < Test::Unit::TestCase
+class ParserTest < Test::Unit::TestCase
   class << self
     def startup
       system "rake compile"
-      require 'fluent/plugin/filter_where/parser.tab'
+      require 'fluent/plugin/filter_where/parser'
     end
   end
 
