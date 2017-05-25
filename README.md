@@ -113,7 +113,7 @@ $ bundle exec rake test
 
 Release:
 
-Modify gemspec and CHANGELOG.md, then
+Modify version.rb and CHANGELOG.md, then
 
 ```
 $ bundle exec rake release
