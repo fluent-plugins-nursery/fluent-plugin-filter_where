@@ -123,7 +123,7 @@ $ bundle exec rake release
 
 This plugin uses [rexical](https://github.com/tenderlove/rexical) for lexical scanner generator, and [racc](https://github.com/tenderlove/racc) for parser generator.
 
-If you modify `praser.rex` or `praser.racc`, you must compile them as:
+If you modify `parser.rex` or `parser.racc`, you must compile them as:
 
 ```
 $ bundle exec rake compile
@@ -131,6 +131,12 @@ $ bundle exec rake compile
 
 The `test` task runs the `compile` task before running.
 
+## Comparisons
+
+* grep filter
+  * grep filter plugin is bundled in fluentd >= 0.12.
+  * I am the maintainor of the plugin, but I now feel where filter plugin is more useful.
+  
 ## Contributing
 
 1. Fork it
