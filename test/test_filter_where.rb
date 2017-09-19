@@ -28,10 +28,10 @@ class FilterWhereTest < Test::Unit::TestCase
     test "where" do
       d = create_driver(%[where foo = 'foo'])
       d.run do
-        d.feed(@time, {'foo' => 'foo'})
-        d.feed(@time, {'foo' => 'bar'})
+        d.emit({'foo' => 'foo'}, @time)
+        d.emit({'foo' => 'bar'}, @time)
       end
-      assert { d.filtered_records == [{'foo' => 'foo'}] }
+      assert { d.filtered.map {|t, r| r}  == [{'foo' => 'foo'}] }
     end
   end
 end
