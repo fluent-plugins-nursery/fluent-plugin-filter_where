@@ -11,7 +11,6 @@ Gem::Specification.new do |gem|
   gem.description = "Fluentd plugin to filter records with SQL-like WHERE statements"
   gem.summary     = gem.description
   gem.licenses    = ["MIT"]
-  gem.has_rdoc    = false
 
   gem.files       = `git ls-files`.split("\n")
   gem.test_files  = `git ls-files -- {test,spec,features}/*`.split("\n")
