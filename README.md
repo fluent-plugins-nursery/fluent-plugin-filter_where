@@ -1,6 +1,6 @@
 # fluent-plugin-filter_where
 
-[![Build Status](https://secure.travis-ci.org/sonots/fluent-plugin-filter_where.png?branch=master)](http://travis-ci.org/sonots/fluent-plugin-filter_where)
+[![test](https://github.com/fluent-plugins-nursery/fluent-plugin-filter_where/actions/workflows/test.yml/badge.svg)](https://github.com/fluent-plugins-nursery/fluent-plugin-filter_where/actions/workflows/test.yml)
 
 Fluentd plugin to filter records with SQL-like WHERE statements
 
